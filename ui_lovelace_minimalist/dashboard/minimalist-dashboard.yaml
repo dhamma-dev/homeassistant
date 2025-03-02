@@ -1,0 +1,593 @@
+# ui_lovelace_minimalist/dashboard/minimalist-dashboard.yaml
+---
+button_card_templates: !include_dir_merge_named "../../custom_components/ui_lovelace_minimalist/__ui_minimalist__/ulm_templates/"
+
+title: "Smart Home Dashboard"
+theme: "minimalist-desktop"
+background: "var(--background-image)"
+views:
+  - type: "custom:grid-layout"
+    title: "Home"
+    icon: "mdi:home"
+    path: "home"
+    layout:
+      grid-template-columns: "1fr 1fr 1fr"
+      grid-template-rows: "auto auto auto"
+      grid-template-areas: |
+        "welcome welcome weather"
+        "quick quick quick"
+        "living bedroom kitchen"
+      mediaquery:
+        "(max-width: 1100px), (orientation: portrait)":
+          grid-template-columns: "1fr 1fr"
+          grid-template-areas: |
+            "welcome welcome"
+            "weather weather"
+            "quick quick"
+            "living bedroom"
+            "kitchen kitchen"
+    cards:
+      # Welcome panel
+      - type: "custom:button-card"
+        template: "card_welcome_scenes"
+        view_layout:
+          grid-area: "welcome"
+        entity: "weather.home"
+        variables:
+          ulm_weather: "weather.home"
+          ulm_card_welcome_scenes_collapse: false
+          ulm_card_welcome_scenes_title: "Welcome Home"
+          ulm_card_welcome_scenes_good_morning_scene: "scene.good_morning"
+          ulm_card_welcome_scenes_good_night_scene: "scene.good_night"
+          ulm_card_welcome_scenes_evening_scene: "scene.evening_scene"
+          ulm_card_welcome_scenes_vacation_scene: "scene.vacation"
+
+      # Weather card
+      - type: "custom:button-card"
+        template: "card_weather"
+        view_layout:
+          grid-area: "weather"
+        entity: "weather.home"
+        variables:
+          ulm_card_weather_title: "Current Weather"
+          ulm_card_weather_enable_forecast: true
+          ulm_card_weather_enable_popup: true
+
+      # Quick access panel
+      - type: "vertical-stack"
+        view_layout:
+          grid-area: "quick"
+        cards:
+          - type: "custom:button-card"
+            template: "card_title"
+            name: "Quick Access"
+            label: "Frequently used controls"
+          - type: "horizontal-stack"
+            cards:
+              - type: "custom:button-card"
+                template: "card_light"
+                entity: "light.living_room"
+                name: "Living Room"
+                variables:
+                  ulm_card_light_enable_popup: true
+                  ulm_card_light_enable_slider: true
+              - type: "custom:button-card"
+                template: "card_binary_sensor_alert"
+                entity: "binary_sensor.front_door"
+                name: "Front Door"
+              - type: "custom:button-card"
+                template: "card_thermostat"
+                entity: "climate.home"
+                name: "Thermostat"
+                variables:
+                  ulm_card_thermostat_enable_popup: true
+              - type: "custom:button-card"
+                template: "card_generic"
+                entity: "switch.outdoor_lights"
+                name: "Outdoor"
+                icon: "mdi:lightbulb-outline"
+
+      # Living Room
+      - type: "vertical-stack"
+        view_layout:
+          grid-area: "living"
+        cards:
+          - type: "custom:button-card"
+            template: "card_title"
+            name: "Living Room"
+            label: "Comfort and entertainment"
+          - type: "custom:button-card"
+            template: "card_light"
+            entity: "light.living_room"
+            name: "Main Light"
+            variables:
+              ulm_card_light_enable_popup: true
+              ulm_card_light_enable_slider: true
+          - type: "custom:button-card"
+            template: "card_media_player"
+            entity: "media_player.living_room_tv"
+            name: "TV"
+            variables:
+              ulm_card_media_player_enable_popup: true
+          - type: "custom:button-card"
+            template: "card_generic"
+            entity: "sensor.living_room_temperature"
+            name: "Temperature"
+            icon: "mdi:thermometer"
+
+      # Bedroom
+      - type: "vertical-stack"
+        view_layout:
+          grid-area: "bedroom"
+        cards:
+          - type: "custom:button-card"
+            template: "card_title"
+            name: "Bedroom"
+            label: "Rest and relaxation"
+          - type: "custom:button-card"
+            template: "card_light"
+            entity: "light.bedroom"
+            name: "Main Light"
+            variables:
+              ulm_card_light_enable_popup: true
+              ulm_card_light_enable_slider: true
+          - type: "custom:button-card"
+            template: "card_generic"
+            entity: "sensor.bedroom_temperature"
+            name: "Temperature"
+            icon: "mdi:thermometer"
+          - type: "custom:button-card"
+            template: "card_cover"
+            entity: "cover.bedroom_blinds"
+            name: "Blinds"
+            variables:
+              ulm_card_cover_enable_popup: true
+
+      # Kitchen
+      - type: "vertical-stack"
+        view_layout:
+          grid-area: "kitchen"
+        cards:
+          - type: "custom:button-card"
+            template: "card_title"
+            name: "Kitchen"
+            label: "Culinary control center"
+          - type: "custom:button-card"
+            template: "card_light"
+            entity: "light.kitchen"
+            name: "Main Light"
+            variables:
+              ulm_card_light_enable_popup: true
+              ulm_card_light_enable_slider: true
+          - type: "custom:button-card"
+            template: "card_generic"
+            entity: "sensor.kitchen_temperature"
+            name: "Temperature"
+            icon: "mdi:thermometer"
+          - type: "custom:button-card"
+            template: "card_generic"
+            entity: "switch.coffee_maker"
+            name: "Coffee Maker"
+            icon: "mdi:coffee"
+
+  # Rooms View
+  - type: "custom:grid-layout"
+    title: "Rooms"
+    icon: "mdi:door"
+    path: "rooms"
+    layout:
+      grid-template-columns: "1fr 1fr"
+      grid-template-rows: "auto auto auto"
+      grid-template-areas: |
+        "title title"
+        "living bedroom"
+        "kitchen bathroom"
+        "office hallway"
+      mediaquery:
+        "(max-width: 800px)":
+          grid-template-columns: "1fr"
+          grid-template-areas: |
+            "title"
+            "living"
+            "bedroom"
+            "kitchen"
+            "bathroom"
+            "office"
+            "hallway"
+    cards:
+      - type: "custom:button-card"
+        template: "card_title"
+        name: "Rooms"
+        label: "Control each room's devices"
+        view_layout:
+          grid-area: "title"
+
+      # Living Room Panel
+      - type: "custom:button-card"
+        template: "card_room"
+        view_layout:
+          grid-area: "living"
+        entity: "light.living_room"
+        name: "Living Room"
+        icon: "mdi:sofa"
+        tap_action:
+          action: "navigate"
+          navigation_path: "/lovelace/living_room"
+
+      # Bedroom Panel
+      - type: "custom:button-card"
+        template: "card_room"
+        view_layout:
+          grid-area: "bedroom"
+        entity: "light.bedroom"
+        name: "Bedroom"
+        icon: "mdi:bed"
+        tap_action:
+          action: "navigate"
+          navigation_path: "/lovelace/bedroom"
+
+      # Kitchen Panel
+      - type: "custom:button-card"
+        template: "card_room"
+        view_layout:
+          grid-area: "kitchen"
+        entity: "light.kitchen"
+        name: "Kitchen"
+        icon: "mdi:refrigerator"
+        tap_action:
+          action: "navigate"
+          navigation_path: "/lovelace/kitchen"
+
+      # Bathroom Panel
+      - type: "custom:button-card"
+        template: "card_room"
+        view_layout:
+          grid-area: "bathroom"
+        entity: "light.bathroom"
+        name: "Bathroom"
+        icon: "mdi:shower"
+        tap_action:
+          action: "navigate"
+          navigation_path: "/lovelace/bathroom"
+
+      # Office Panel
+      - type: "custom:button-card"
+        template: "card_room"
+        view_layout:
+          grid-area: "office"
+        entity: "light.office"
+        name: "Office"
+        icon: "mdi:desk"
+        tap_action:
+          action: "navigate"
+          navigation_path: "/lovelace/office"
+
+      # Hallway Panel
+      - type: "custom:button-card"
+        template: "card_room"
+        view_layout:
+          grid-area: "hallway"
+        entity: "light.hallway"
+        name: "Hallway"
+        icon: "mdi:door"
+        tap_action:
+          action: "navigate"
+          navigation_path: "/lovelace/hallway"
+
+  # Climate View
+  - type: "custom:grid-layout"
+    title: "Climate"
+    icon: "mdi:thermometer"
+    path: "climate"
+    layout:
+      grid-template-columns: "1fr 1fr"
+      grid-template-rows: "auto auto auto"
+      grid-template-areas: |
+        "title title"
+        "main main"
+        "temp humidity"
+        "history history"
+      mediaquery:
+        "(max-width: 800px)":
+          grid-template-columns: "1fr"
+          grid-template-areas: |
+            "title"
+            "main"
+            "temp"
+            "humidity"
+            "history"
+    cards:
+      - type: "custom:button-card"
+        template: "card_title"
+        name: "Climate Control"
+        label: "Manage your home's temperature and humidity"
+        view_layout:
+          grid-area: "title"
+
+      # Main Thermostat
+      - type: "custom:button-card"
+        template: "card_thermostat"
+        view_layout:
+          grid-area: "main"
+        entity: "climate.home"
+        name: "Main Thermostat"
+        variables:
+          ulm_card_thermostat_enable_popup: true
+
+      # Temperature Sensors
+      - type: "custom:button-card"
+        template: "card_title"
+        name: "Temperature Sensors"
+        view_layout:
+          grid-area: "temp"
+        styles:
+          card:
+            - padding: "0px"
+        custom_fields:
+          content:
+            card:
+              type: "custom:auto-entities"
+              filter:
+                include:
+                  - entity_id: "sensor.*temperature*"
+                    options:
+                      type: "custom:button-card"
+                      template: "card_generic"
+                      icon: "mdi:thermometer"
+
+      # Humidity Sensors
+      - type: "custom:button-card"
+        template: "card_title"
+        name: "Humidity Sensors"
+        view_layout:
+          grid-area: "humidity"
+        styles:
+          card:
+            - padding: "0px"
+        custom_fields:
+          content:
+            card:
+              type: "custom:auto-entities"
+              filter:
+                include:
+                  - entity_id: "sensor.*humidity*"
+                    options:
+                      type: "custom:button-card"
+                      template: "card_generic"
+                      icon: "mdi:water-percent"
+
+      # Temperature History
+      - type: "vertical-stack"
+        view_layout:
+          grid-area: "history"
+        cards:
+          - type: "custom:button-card"
+            template: "card_title"
+            name: "Temperature History"
+          - type: "custom:mini-graph-card"
+            entities:
+              - entity: "sensor.living_room_temperature"
+                name: "Living Room"
+              - entity: "sensor.bedroom_temperature"
+                name: "Bedroom"
+              - entity: "sensor.kitchen_temperature"
+                name: "Kitchen"
+            hours_to_show: 24
+            points_per_hour: 2
+            line_width: 2
+            animate: true
+            show:
+              labels: true
+              points: hover
+              legend: true
+
+  # Security View
+  - type: "custom:grid-layout"
+    title: "Security"
+    icon: "mdi:shield-home"
+    path: "security"
+    layout:
+      grid-template-columns: "1fr 1fr"
+      grid-template-rows: "auto auto auto"
+      grid-template-areas: |
+        "title title"
+        "alarm alarm"
+        "doors windows"
+        "motion cameras"
+      mediaquery:
+        "(max-width: 800px)":
+          grid-template-columns: "1fr"
+          grid-template-areas: |
+            "title"
+            "alarm"
+            "doors"
+            "windows"
+            "motion"
+            "cameras"
+    cards:
+      - type: "custom:button-card"
+        template: "card_title"
+        name: "Home Security"
+        label: "Monitor and control your home security"
+        view_layout:
+          grid-area: "title"
+
+      # Alarm System
+      - type: "custom:button-card"
+        template: "card_alarm"
+        view_layout:
+          grid-area: "alarm"
+        entity: "alarm_control_panel.home_alarm"
+        name: "Alarm System"
+        variables:
+          ulm_card_alarm_enable_popup: true
+
+      # Door Sensors
+      - type: "custom:button-card"
+        template: "card_title"
+        name: "Doors"
+        view_layout:
+          grid-area: "doors"
+        styles:
+          card:
+            - padding: "0px"
+        custom_fields:
+          content:
+            card:
+              type: "custom:auto-entities"
+              filter:
+                include:
+                  - entity_id: "binary_sensor.*door*"
+                    options:
+                      type: "custom:button-card"
+                      template: "card_binary_sensor_alert"
+
+      # Window Sensors
+      - type: "custom:button-card"
+        template: "card_title"
+        name: "Windows"
+        view_layout:
+          grid-area: "windows"
+        styles:
+          card:
+            - padding: "0px"
+        custom_fields:
+          content:
+            card:
+              type: "custom:auto-entities"
+              filter:
+                include:
+                  - entity_id: "binary_sensor.*window*"
+                    options:
+                      type: "custom:button-card"
+                      template: "card_binary_sensor_alert"
+
+      # Motion Sensors
+      - type: "custom:button-card"
+        template: "card_title"
+        name: "Motion Detection"
+        view_layout:
+          grid-area: "motion"
+        styles:
+          card:
+            - padding: "0px"
+        custom_fields:
+          content:
+            card:
+              type: "custom:auto-entities"
+              filter:
+                include:
+                  - entity_id: "binary_sensor.*motion*"
+                    options:
+                      type: "custom:button-card"
+                      template: "card_binary_sensor_alert"
+
+      # Cameras
+      - type: "custom:button-card"
+        template: "card_title"
+        name: "Cameras"
+        view_layout:
+          grid-area: "cameras"
+        styles:
+          card:
+            - padding: "0px"
+        custom_fields:
+          content:
+            card:
+              type: "vertical-stack"
+              cards:
+                - type: "picture-entity"
+                  entity: "camera.front_door"
+                  camera_view: "live"
+                  show_name: true
+                  show_state: false
+                - type: "picture-entity"
+                  entity: "camera.back_yard"
+                  camera_view: "live"
+                  show_name: true
+                  show_state: false
+
+  # Energy View
+  - type: "custom:grid-layout"
+    title: "Energy"
+    icon: "mdi:flash"
+    path: "energy"
+    layout:
+      grid-template-columns: "1fr 1fr"
+      grid-template-rows: "auto auto auto"
+      grid-template-areas: |
+        "title title"
+        "usage usage"
+        "devices devices"
+        "history history"
+      mediaquery:
+        "(max-width: 800px)":
+          grid-template-columns: "1fr"
+          grid-template-areas: |
+            "title"
+            "usage"
+            "devices"
+            "history"
+    cards:
+      - type: "custom:button-card"
+        template: "card_title"
+        name: "Energy Management"
+        label: "Monitor and control your home's energy usage"
+        view_layout:
+          grid-area: "title"
+
+      # Current Usage
+      - type: "custom:button-card"
+        template: "card_power"
+        view_layout:
+          grid-area: "usage"
+        entity: "sensor.home_power"
+        name: "Current Usage"
+        variables:
+          ulm_card_power_watt: "sensor.home_power"
+          ulm_card_power_consumption_today: "sensor.energy_consumption_today"
+          ulm_card_power_consumption_low_limit: 100
+          ulm_card_power_consumption_high_limit: 1000
+
+      # High-Usage Devices
+      - type: "vertical-stack"
+        view_layout:
+          grid-area: "devices"
+        cards:
+          - type: "custom:button-card"
+            template: "card_title"
+            name: "High-Usage Devices"
+          - type: "entities"
+            show_header_toggle: false
+            entities:
+              - entity: "switch.washing_machine"
+                secondary_info: "last-changed"
+              - entity: "switch.dishwasher"
+                secondary_info: "last-changed"
+              - entity: "switch.oven"
+                secondary_info: "last-changed"
+              - entity: "switch.air_conditioner"
+                secondary_info: "last-changed"
+
+      # Energy History
+      - type: "vertical-stack"
+        view_layout:
+          grid-area: "history"
+        cards:
+          - type: "custom:button-card"
+            template: "card_title"
+            name: "Energy History"
+          - type: "custom:mini-graph-card"
+            entities:
+              - entity: "sensor.energy_consumption"
+                name: "Consumption"
+            hours_to_show: 168
+            points_per_hour: 0.5
+            line_width: 2
+            animate: true
+            show:
+              labels: true
+              fill: true
+              legend: true
+            group_by: "date"
+            aggregate_func: "sum"
