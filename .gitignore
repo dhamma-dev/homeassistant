@@ -1,22 +1,47 @@
-# Home Assistant database
+# Home Assistant database files
 *.db
 *.db-*
+home-assistant_v2.db*
+
+# Log files
+*.log
+home-assistant.log*
 
 # Backup files
 backups/
 *.tar
 
-# Logs
-*.log
-
-# Sensitive data
-secrets.yaml
-known_devices.yaml
+# Storage and sensitive data
 .storage/
 .cloud/
+secrets.yaml
+known_devices.yaml
+*.august.conf
+*token*
+auth*
+.google*
+
+# Media files
+image/
+tts/
+www/downloaded/
 
 # Cache and temporary files
 __pycache__/
 *.py[cod]
-*.class
+*$py.class
 .DS_Store
+
+# Build artifacts
+deps/
+
+# Environment specific
+*.pid
+*.state
+entity_registry.yaml
+*.conf
+home-assistant.env
+
+# Local development
+.vscode/
+.idea/
